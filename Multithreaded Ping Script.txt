@@ -1,0 +1,24 @@
+#!/bin/bash
+#//This script reads from a file IPLIST.txt in the working directory //
+#//Put one IP address on each line // 
+#//Output is dircted to IPRESULTS.csv in the working directory //
+#//NTS - Implement automatic detection of user file path //
+#//created by Dustin Lee NOV 2014//
+if [ -f "/home/user/Desktop/IPRESULTS.csv" ]
+        then
+                rm /home/user/Desktop/IPRESULTS.csv
+fi
+PingFun () {
+        local IP=$1
+        ping -c 2 -W 1 $IP
+        OUTPUT1=$?
+        if [ $OUTPUT1 -eq 0 ]
+        then
+            echo "$IP, is up" >> IPRESULTS.csv
+        else
+            echo "$IP, is down" >> IPRESULTS.csv
+        fi
+        }
+RUNLIST="IPLIST.txt"
+RUNLINES=$(cat $RUNLIST)
+for IP in $RUNLINES; do Pingfun $IP & done
